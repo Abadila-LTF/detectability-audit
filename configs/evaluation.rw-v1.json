@@ -1,0 +1,191 @@
+{
+  "schema_version": "aegis.clean-rewrite.evaluation.v1",
+  "run_id": "clean-rw-v1",
+  "status": "prospective_frozen_before_rewrite_scoring",
+  "global_gate": {
+    "phase": "main",
+    "cohort": "main",
+    "source_count_per_cell": 500,
+    "source_id_first": "arxiv2k:0000",
+    "source_id_last": "arxiv2k:0499",
+    "require_identical_source_order": true,
+    "require_all_cells_before_representation_or_scoring": true,
+    "cells": [
+      {
+        "suite": "tulu",
+        "cell": "base",
+        "account_alias": "account_2_only"
+      },
+      {
+        "suite": "tulu",
+        "cell": "sft",
+        "account_alias": "account_2_only"
+      },
+      {
+        "suite": "tulu",
+        "cell": "dpo",
+        "account_alias": "account_1"
+      },
+      {
+        "suite": "tulu",
+        "cell": "rlvr",
+        "account_alias": "account_2_only"
+      }
+    ],
+    "gate_script": "scripts/validate_rewrite_results.py panel"
+  },
+  "splits": {
+    "field": "split_origin",
+    "source_paired": true,
+    "expected_source_counts": {
+      "train": 352,
+      "val": 69,
+      "test": 79
+    }
+  },
+  "representation": {
+    "model_hf_id": "FacebookAI/roberta-base",
+    "model_revision": "e2da8e2f811d1448a5b465c236feacd80ffbac7b",
+    "content_tokens": 128,
+    "content_tokenization": "add_special_tokens_false_then_first_128_ids",
+    "model_boundaries": "added_after_content_truncation",
+    "pooling": "mean_last_hidden_content_positions_only",
+    "boundary_positions_excluded_from_pooling": true,
+    "device": "cpu",
+    "batch_size": 16,
+    "dtype": "float32"
+  },
+  "classifier": {
+    "family": "logistic_regression",
+    "penalty": "l2",
+    "solver": "lbfgs",
+    "standard_scaler_fit": "train_only",
+    "c_grid": [
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ],
+    "selection_metric": "validation_auroc",
+    "tie_break": "smallest_c",
+    "refit_after_selection": false,
+    "max_iter": 10000,
+    "tolerance": 0.0001,
+    "random_seed": 730241,
+    "positive_label": "generated",
+    "primary_test_metric": "auroc"
+  },
+  "evaluation_lock": {
+    "artifact_suffix": ".lock.json",
+    "code_files": [
+      "scripts/validate_results.py",
+      "scripts/validate_analysis_views.py",
+      "scripts/validate_main_panel.py",
+      "scripts/build_roberta_views.py",
+      "scripts/evaluate_main.py",
+      "src/aegis_staircases/contracts.py",
+      "src/aegis_staircases/evaluation_contract.py",
+      "src/aegis_staircases/views.py",
+      "src/aegis_staircases/evaluation.py",
+      "scripts/validate_rewrite_results.py",
+      "scripts/evaluate_rewrite.py",
+      "src/aegis_staircases/rewrite_prompts.py",
+      "src/aegis_staircases/headroom.py"
+    ],
+    "package_distributions": [
+      "numpy",
+      "scipy",
+      "scikit-learn",
+      "torch",
+      "transformers",
+      "tokenizers",
+      "huggingface-hub"
+    ],
+    "roberta_snapshot_files": [
+      "config.json",
+      "merges.txt",
+      "special_tokens_map.json",
+      "tokenizer.json",
+      "tokenizer_config.json",
+      "vocab.json"
+    ],
+    "weight_preference": [
+      "model.safetensors",
+      "pytorch_model.bin"
+    ]
+  },
+  "statistics": {
+    "alpha": 0.05,
+    "dprime": "sqrt_2_times_normal_ppf_auroc",
+    "dprime_at_auroc_one": "null_right_censored",
+    "bootstrap": {
+      "replicates": 10000,
+      "seed": 730241,
+      "unit": "paired_test_source_id",
+      "same_resample_across_all_cells": true,
+      "interval": "percentile_95",
+      "quantile_method": "linear"
+    },
+    "tulu": {
+      "order": [
+        "base",
+        "sft",
+        "dpo",
+        "rlvr"
+      ],
+      "alternative": "base_less_sft_less_dpo_less_rlvr",
+      "test": "exact_one_sided_tie_aware_page_dp",
+      "blocks": 79,
+      "source_contribution": "0.5_times_mean_ai_i_vs_every_human_plus_mean_every_ai_vs_human_i",
+      "contrasts": [
+        "sft-base",
+        "dpo-sft",
+        "rlvr-dpo",
+        "rlvr-base"
+      ]
+    },
+    "ceiling": {
+      "detection": "unrounded_test_auroc_exactly_one",
+      "enumerate_globally_consistent_relative_orders": true,
+      "tulu_break_ceiling_ties_consistently_in_every_source_block": true,
+      "withhold_if_direction_or_alpha_decision_changes": true,
+      "withheld_label": "WITHHELD_CEILING"
+    },
+    "headroom": {
+      "primary_view": 128,
+      "descent_views": [
+        64,
+        32
+      ],
+      "floor_view": 32,
+      "descend_if_any_rewrite_cell_auroc_equals_one": true,
+      "headroom_view": "longest_evaluated_view_with_all_four_rewrite_cells_below_ceiling"
+    },
+    "dissociation": {
+      "statistic": "delta_s_equals_auroc_rw_minus_auroc_fg_equals_mean_sourcewise_q_difference",
+      "stages": [
+        "base",
+        "sft",
+        "dpo",
+        "rlvr"
+      ],
+      "free_generation_comparator": "clean-fg-v5 tulu detectors refit from the locked FG views at the same view; test AUROC must equal the released value exactly",
+      "bootstrap": "one paired source bootstrap over 8 cells (4 rw + 4 fg), same resample",
+      "decision": "stage dissociates iff 95% percentile CI of delta_s excludes 0",
+      "ceiling": {
+        "both_auroc_one": "WITHHELD_CEILING",
+        "one_auroc_one": "CEILING_CENSORED_no_decision"
+      },
+      "summary": "difference_in_differences_delta_rlvr_minus_delta_base_with_bootstrap_ci",
+      "views": [
+        "128",
+        "rewrite_headroom_view_if_any"
+      ]
+    }
+  },
+  "parent_evaluation": {
+    "path": "configs/evaluation.v1.json",
+    "sha256": "84c644845b713b75282f535e21ee99172b39484a54cad0cb281f86ac80b30b4c"
+  }
+}

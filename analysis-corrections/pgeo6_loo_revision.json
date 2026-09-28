@@ -1,0 +1,484 @@
+{
+  "experiment": "P-geo-6_additive_model_LOO_revision",
+  "reviewer": "R1: additive model evaluated in-sample",
+  "inputs": {
+    "embeddings": "data/embed_cache/{generate-lf,rewrite-lf}/train_<model>.npy",
+    "labels": "data/splits/<cond>/train_<model>.csv (+ data/exclusions/*_near_copies.csv via data/processed/<cond>/all.csv)",
+    "dprime": "analysis/results/pgeo6_additive_model.json -> dprime_map",
+    "reproduction_check": "analysis/results/pgeo6_additive_model.json -> r2_vector_space, model_norms, norm_vs_dprime"
+  },
+  "data_root": "/Users/abadila/Desktop/ethics/AEGIS-Multi",
+  "embedding_dim": 768,
+  "in_sample_reproduction": {
+    "vector_r2": 0.8545,
+    "stored_vector_r2": 0.8544999957084656,
+    "spearman_norm_pred_vs_dprime": 0.9158,
+    "stored": 0.9158,
+    "norm_r2_in_sample": 0.8952
+  },
+  "reference_measured_norm_vs_dprime": {
+    "spearman_rho": 0.9639,
+    "spearman_p": 0.0,
+    "within_condition_spearman": {
+      "generate-lf": 0.8424,
+      "rewrite-lf": 0.9394
+    }
+  },
+  "loo_additive": {
+    "predictor": "additive (mu + alpha_M + beta_c), leave-one-cell-out",
+    "vector_r2_heldout": 0.2814,
+    "norm_r2_heldout": 0.4395,
+    "norm_pearson_pred_vs_measured": 0.6734,
+    "mean_cosine_pred_vs_measured": 0.8931,
+    "min_cosine_pred_vs_measured": 0.7596,
+    "dprime_spearman_rho": 0.6767,
+    "dprime_spearman_p": 0.001051,
+    "dprime_pearson_r": 0.686,
+    "dprime_pearson_p": 0.00084,
+    "within_condition": {
+      "generate-lf": {
+        "n": 10,
+        "spearman_rho": -0.4061,
+        "spearman_p": 0.244282,
+        "pearson_r": -0.1651,
+        "pearson_p": 0.648628,
+        "norm_r2_heldout": -1.9051
+      },
+      "rewrite-lf": {
+        "n": 10,
+        "spearman_rho": 0.5636,
+        "spearman_p": 0.089724,
+        "pearson_r": 0.5534,
+        "pearson_p": 0.096984,
+        "norm_r2_heldout": -0.5249
+      }
+    },
+    "per_cell": {
+      "claude-sonnet/generate-lf": {
+        "norm_measured": 12.7947,
+        "norm_predicted": 16.2616,
+        "cosine": 0.9148,
+        "dprime": 5.0741
+      },
+      "claude-sonnet/rewrite-lf": {
+        "norm_measured": 12.1217,
+        "norm_predicted": 11.0282,
+        "cosine": 0.827,
+        "dprime": 4.248
+      },
+      "deepseek-r1/generate-lf": {
+        "norm_measured": 12.8265,
+        "norm_predicted": 11.8019,
+        "cosine": 0.8749,
+        "dprime": 5.293
+      },
+      "deepseek-r1/rewrite-lf": {
+        "norm_measured": 8.7065,
+        "norm_predicted": 12.4891,
+        "cosine": 0.8868,
+        "dprime": 3.4592
+      },
+      "gemini-flash/generate-lf": {
+        "norm_measured": 12.1645,
+        "norm_predicted": 13.2433,
+        "cosine": 0.9485,
+        "dprime": 4.1644
+      },
+      "gemini-flash/rewrite-lf": {
+        "norm_measured": 8.861,
+        "norm_predicted": 9.38,
+        "cosine": 0.8948,
+        "dprime": 3.4483
+      },
+      "gpt-4o/generate-lf": {
+        "norm_measured": 15.7728,
+        "norm_predicted": 11.146,
+        "cosine": 0.9623,
+        "dprime": 5.4014
+      },
+      "gpt-4o/rewrite-lf": {
+        "norm_measured": 6.7424,
+        "norm_predicted": 10.6914,
+        "cosine": 0.8677,
+        "dprime": 2.7102
+      },
+      "gpt-4o-mini/generate-lf": {
+        "norm_measured": 15.9578,
+        "norm_predicted": 12.6088,
+        "cosine": 0.9644,
+        "dprime": 5.3014
+      },
+      "gpt-4o-mini/rewrite-lf": {
+        "norm_measured": 7.9262,
+        "norm_predicted": 10.7076,
+        "cosine": 0.8951,
+        "dprime": 3.0437
+      },
+      "llama-3.1-8b/generate-lf": {
+        "norm_measured": 12.3024,
+        "norm_predicted": 10.9269,
+        "cosine": 0.9211,
+        "dprime": 5.0564
+      },
+      "llama-3.1-8b/rewrite-lf": {
+        "norm_measured": 5.2648,
+        "norm_predicted": 7.3715,
+        "cosine": 0.7596,
+        "dprime": 2.0028
+      },
+      "llama-3.3-70b/generate-lf": {
+        "norm_measured": 11.818,
+        "norm_predicted": 12.1885,
+        "cosine": 0.9418,
+        "dprime": 4.5812
+      },
+      "llama-3.3-70b/rewrite-lf": {
+        "norm_measured": 6.7917,
+        "norm_predicted": 6.7576,
+        "cosine": 0.8159,
+        "dprime": 2.9391
+      },
+      "llama-3.3-70b-instruct/generate-lf": {
+        "norm_measured": 12.0647,
+        "norm_predicted": 12.0018,
+        "cosine": 0.9557,
+        "dprime": 4.2666
+      },
+      "llama-3.3-70b-instruct/rewrite-lf": {
+        "norm_measured": 6.6698,
+        "norm_predicted": 6.8107,
+        "cosine": 0.8589,
+        "dprime": 2.8755
+      },
+      "mistral-large/generate-lf": {
+        "norm_measured": 13.1592,
+        "norm_predicted": 13.7184,
+        "cosine": 0.9476,
+        "dprime": 5.0265
+      },
+      "mistral-large/rewrite-lf": {
+        "norm_measured": 9.348,
+        "norm_predicted": 9.9064,
+        "cosine": 0.8979,
+        "dprime": 3.3196
+      },
+      "qwen-72b/generate-lf": {
+        "norm_measured": 14.616,
+        "norm_predicted": 11.0175,
+        "cosine": 0.9344,
+        "dprime": 5.3101
+      },
+      "qwen-72b/rewrite-lf": {
+        "norm_measured": 6.2159,
+        "norm_predicted": 9.3816,
+        "cosine": 0.7936,
+        "dprime": 2.6757
+      }
+    }
+  },
+  "loo_baseline_model_only": {
+    "predictor": "baseline: model-only (\u0394 of same model in the other condition)",
+    "vector_r2_heldout": -1.0664,
+    "norm_r2_heldout": -2.5101,
+    "norm_pearson_pred_vs_measured": -0.7551,
+    "mean_cosine_pred_vs_measured": 0.7908,
+    "min_cosine_pred_vs_measured": 0.6828,
+    "dprime_spearman_rho": -0.7414,
+    "dprime_spearman_p": 0.000184,
+    "dprime_pearson_r": -0.7688,
+    "dprime_pearson_p": 7.5e-05,
+    "within_condition": {
+      "generate-lf": {
+        "n": 10,
+        "spearman_rho": -0.2121,
+        "spearman_p": 0.556306,
+        "pearson_r": 0.0006,
+        "pearson_p": 0.998711,
+        "norm_r2_heldout": -15.9848
+      },
+      "rewrite-lf": {
+        "n": 10,
+        "spearman_rho": -0.0667,
+        "spearman_p": 0.854813,
+        "pearson_r": -0.1475,
+        "pearson_p": 0.684303,
+        "norm_r2_heldout": -9.2812
+      }
+    },
+    "per_cell": {
+      "claude-sonnet/generate-lf": {
+        "norm_measured": 12.7947,
+        "norm_predicted": 12.1217,
+        "cosine": 0.8887,
+        "dprime": 5.0741
+      },
+      "claude-sonnet/rewrite-lf": {
+        "norm_measured": 12.1217,
+        "norm_predicted": 12.7947,
+        "cosine": 0.8887,
+        "dprime": 4.248
+      },
+      "deepseek-r1/generate-lf": {
+        "norm_measured": 12.8265,
+        "norm_predicted": 8.7065,
+        "cosine": 0.8747,
+        "dprime": 5.293
+      },
+      "deepseek-r1/rewrite-lf": {
+        "norm_measured": 8.7065,
+        "norm_predicted": 12.8265,
+        "cosine": 0.8747,
+        "dprime": 3.4592
+      },
+      "gemini-flash/generate-lf": {
+        "norm_measured": 12.1645,
+        "norm_predicted": 8.861,
+        "cosine": 0.8639,
+        "dprime": 4.1644
+      },
+      "gemini-flash/rewrite-lf": {
+        "norm_measured": 8.861,
+        "norm_predicted": 12.1645,
+        "cosine": 0.8639,
+        "dprime": 3.4483
+      },
+      "gpt-4o/generate-lf": {
+        "norm_measured": 15.7728,
+        "norm_predicted": 6.7424,
+        "cosine": 0.7237,
+        "dprime": 5.4014
+      },
+      "gpt-4o/rewrite-lf": {
+        "norm_measured": 6.7424,
+        "norm_predicted": 15.7728,
+        "cosine": 0.7237,
+        "dprime": 2.7102
+      },
+      "gpt-4o-mini/generate-lf": {
+        "norm_measured": 15.9578,
+        "norm_predicted": 7.9262,
+        "cosine": 0.7782,
+        "dprime": 5.3014
+      },
+      "gpt-4o-mini/rewrite-lf": {
+        "norm_measured": 7.9262,
+        "norm_predicted": 15.9578,
+        "cosine": 0.7782,
+        "dprime": 3.0437
+      },
+      "llama-3.1-8b/generate-lf": {
+        "norm_measured": 12.3024,
+        "norm_predicted": 5.2648,
+        "cosine": 0.7375,
+        "dprime": 5.0564
+      },
+      "llama-3.1-8b/rewrite-lf": {
+        "norm_measured": 5.2648,
+        "norm_predicted": 12.3024,
+        "cosine": 0.7375,
+        "dprime": 2.0028
+      },
+      "llama-3.3-70b/generate-lf": {
+        "norm_measured": 11.818,
+        "norm_predicted": 6.7917,
+        "cosine": 0.7524,
+        "dprime": 4.5812
+      },
+      "llama-3.3-70b/rewrite-lf": {
+        "norm_measured": 6.7917,
+        "norm_predicted": 11.818,
+        "cosine": 0.7524,
+        "dprime": 2.9391
+      },
+      "llama-3.3-70b-instruct/generate-lf": {
+        "norm_measured": 12.0647,
+        "norm_predicted": 6.6698,
+        "cosine": 0.7569,
+        "dprime": 4.2666
+      },
+      "llama-3.3-70b-instruct/rewrite-lf": {
+        "norm_measured": 6.6698,
+        "norm_predicted": 12.0647,
+        "cosine": 0.7569,
+        "dprime": 2.8755
+      },
+      "mistral-large/generate-lf": {
+        "norm_measured": 13.1592,
+        "norm_predicted": 9.348,
+        "cosine": 0.8489,
+        "dprime": 5.0265
+      },
+      "mistral-large/rewrite-lf": {
+        "norm_measured": 9.348,
+        "norm_predicted": 13.1592,
+        "cosine": 0.8489,
+        "dprime": 3.3196
+      },
+      "qwen-72b/generate-lf": {
+        "norm_measured": 14.616,
+        "norm_predicted": 6.2159,
+        "cosine": 0.6828,
+        "dprime": 5.3101
+      },
+      "qwen-72b/rewrite-lf": {
+        "norm_measured": 6.2159,
+        "norm_predicted": 14.616,
+        "cosine": 0.6828,
+        "dprime": 2.6757
+      }
+    }
+  },
+  "loo_baseline_task_only": {
+    "predictor": "baseline: task-only (mean \u0394 of the other 9 models in the same condition)",
+    "vector_r2_heldout": 0.2235,
+    "norm_r2_heldout": 0.5631,
+    "norm_pearson_pred_vs_measured": 0.806,
+    "mean_cosine_pred_vs_measured": 0.8905,
+    "min_cosine_pred_vs_measured": 0.6839,
+    "dprime_spearman_rho": 0.5805,
+    "dprime_spearman_p": 0.00729,
+    "dprime_pearson_r": 0.8497,
+    "dprime_pearson_p": 2e-06,
+    "within_condition": {
+      "generate-lf": {
+        "n": 10,
+        "spearman_rho": -0.3939,
+        "spearman_p": 0.259998,
+        "pearson_r": -0.4293,
+        "pearson_p": 0.215644,
+        "norm_r2_heldout": -1.0463
+      },
+      "rewrite-lf": {
+        "n": 10,
+        "spearman_rho": -0.8182,
+        "spearman_p": 0.003815,
+        "pearson_r": -0.9108,
+        "pearson_p": 0.000249,
+        "norm_r2_heldout": -0.3205
+      }
+    },
+    "per_cell": {
+      "claude-sonnet/generate-lf": {
+        "norm_measured": 12.7947,
+        "norm_predicted": 12.2352,
+        "cosine": 0.804,
+        "dprime": 5.0741
+      },
+      "claude-sonnet/rewrite-lf": {
+        "norm_measured": 12.1217,
+        "norm_predicted": 6.8392,
+        "cosine": 0.9004,
+        "dprime": 4.248
+      },
+      "deepseek-r1/generate-lf": {
+        "norm_measured": 12.8265,
+        "norm_predicted": 12.3899,
+        "cosine": 0.6839,
+        "dprime": 5.293
+      },
+      "deepseek-r1/rewrite-lf": {
+        "norm_measured": 8.7065,
+        "norm_predicted": 7.2658,
+        "cosine": 0.8144,
+        "dprime": 3.4592
+      },
+      "gemini-flash/generate-lf": {
+        "norm_measured": 12.1645,
+        "norm_predicted": 12.1545,
+        "cosine": 0.9171,
+        "dprime": 4.1644
+      },
+      "gemini-flash/rewrite-lf": {
+        "norm_measured": 8.861,
+        "norm_predicted": 7.1198,
+        "cosine": 0.964,
+        "dprime": 3.4483
+      },
+      "gpt-4o/generate-lf": {
+        "norm_measured": 15.7728,
+        "norm_predicted": 11.7139,
+        "cosine": 0.9597,
+        "dprime": 5.4014
+      },
+      "gpt-4o/rewrite-lf": {
+        "norm_measured": 6.7424,
+        "norm_predicted": 7.3323,
+        "cosine": 0.9879,
+        "dprime": 2.7102
+      },
+      "gpt-4o-mini/generate-lf": {
+        "norm_measured": 15.9578,
+        "norm_predicted": 11.7177,
+        "cosine": 0.9444,
+        "dprime": 5.3014
+      },
+      "gpt-4o-mini/rewrite-lf": {
+        "norm_measured": 7.9262,
+        "norm_predicted": 7.2265,
+        "cosine": 0.9568,
+        "dprime": 3.0437
+      },
+      "llama-3.1-8b/generate-lf": {
+        "norm_measured": 12.3024,
+        "norm_predicted": 12.2372,
+        "cosine": 0.8392,
+        "dprime": 5.0564
+      },
+      "llama-3.1-8b/rewrite-lf": {
+        "norm_measured": 5.2648,
+        "norm_predicted": 7.556,
+        "cosine": 0.8756,
+        "dprime": 2.0028
+      },
+      "llama-3.3-70b/generate-lf": {
+        "norm_measured": 11.818,
+        "norm_predicted": 12.2117,
+        "cosine": 0.8994,
+        "dprime": 4.5812
+      },
+      "llama-3.3-70b/rewrite-lf": {
+        "norm_measured": 6.7917,
+        "norm_predicted": 7.4481,
+        "cosine": 0.8124,
+        "dprime": 2.9391
+      },
+      "llama-3.3-70b-instruct/generate-lf": {
+        "norm_measured": 12.0647,
+        "norm_predicted": 12.1898,
+        "cosine": 0.8967,
+        "dprime": 4.2666
+      },
+      "llama-3.3-70b-instruct/rewrite-lf": {
+        "norm_measured": 6.6698,
+        "norm_predicted": 7.4542,
+        "cosine": 0.8202,
+        "dprime": 2.8755
+      },
+      "mistral-large/generate-lf": {
+        "norm_measured": 13.1592,
+        "norm_predicted": 12.0657,
+        "cosine": 0.9061,
+        "dprime": 5.0265
+      },
+      "mistral-large/rewrite-lf": {
+        "norm_measured": 9.348,
+        "norm_predicted": 7.0881,
+        "cosine": 0.9411,
+        "dprime": 3.3196
+      },
+      "qwen-72b/generate-lf": {
+        "norm_measured": 14.616,
+        "norm_predicted": 11.8863,
+        "cosine": 0.9265,
+        "dprime": 5.3101
+      },
+      "qwen-72b/rewrite-lf": {
+        "norm_measured": 6.2159,
+        "norm_predicted": 7.4073,
+        "cosine": 0.9609,
+        "dprime": 2.6757
+      }
+    }
+  },
+  "note": "With only 2 conditions, a held-out cell's model effect is estimated from that model's single other cell, so LOO is a strict test of additivity (the interaction term is fully out-of-sample)."
+}

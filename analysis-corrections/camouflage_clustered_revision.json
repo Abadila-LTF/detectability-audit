@@ -1,0 +1,679 @@
+{
+  "experiment": "camouflage_clustered_revision",
+  "reviewers": "R1 & R3: pooled rho over 2,989 pairs ignores clustering by source and generator",
+  "inputs": {
+    "stored_summary": "analysis/results/camouflage_bleu_confidence.json (pooled.*, per_model.*)",
+    "regenerated_from": [
+      "scripts/track3_camouflage.py (get_probe_confidence, load_source_texts, get_test_pairs)",
+      "scripts/bleu_utils.py",
+      "data/embed_cache/rewrite-lf/*",
+      "data/splits/rewrite-lf/*",
+      "data/processed/rewrite-lf/all.csv",
+      "/Users/abadila/Desktop/ethics/AEGIS/data/rewritten_texts_file_2K_1.csv"
+    ],
+    "corroboration": [
+      "analysis/results/bleu_confidence_llama-3.1-8b.json",
+      "analysis/results/bleu_confidence_llama-3.3-70b.json"
+    ]
+  },
+  "data_root": "/Users/abadila/Desktop/ethics/AEGIS-Multi",
+  "bootstrap": {
+    "B": 5000,
+    "seed": 20260928,
+    "ci": "percentile 95%"
+  },
+  "reproduction_of_stored_result": {
+    "pooled_n": 2989,
+    "stored_pooled_n": 2989,
+    "pooled_rho_original_pairing": -0.2078,
+    "stored_pooled_rho": -0.2078,
+    "per_model": {
+      "claude-sonnet": {
+        "rho": -0.2677,
+        "stored_rho": -0.2677,
+        "bleu_mean": 0.0033,
+        "stored_bleu_mean": 0.0033
+      },
+      "deepseek-r1": {
+        "rho": -0.2123,
+        "stored_rho": -0.2123,
+        "bleu_mean": 0.0037,
+        "stored_bleu_mean": 0.0037
+      },
+      "gemini-flash": {
+        "rho": -0.1698,
+        "stored_rho": -0.1698,
+        "bleu_mean": 0.0043,
+        "stored_bleu_mean": 0.0043
+      },
+      "gpt-4o": {
+        "rho": 0.0067,
+        "stored_rho": 0.0067,
+        "bleu_mean": 0.0053,
+        "stored_bleu_mean": 0.0053
+      },
+      "gpt-4o-mini": {
+        "rho": -0.0469,
+        "stored_rho": -0.0469,
+        "bleu_mean": 0.0053,
+        "stored_bleu_mean": 0.0053
+      },
+      "llama-3.1-8b": {
+        "rho": -0.1189,
+        "stored_rho": -0.1189,
+        "bleu_mean": 0.0059,
+        "stored_bleu_mean": 0.0059
+      },
+      "llama-3.3-70b": {
+        "rho": -0.0233,
+        "stored_rho": -0.0233,
+        "bleu_mean": 0.0059,
+        "stored_bleu_mean": 0.0059
+      },
+      "llama-3.3-70b-instruct": {
+        "rho": -0.0308,
+        "stored_rho": -0.0308,
+        "bleu_mean": 0.0053,
+        "stored_bleu_mean": 0.0053
+      },
+      "mistral-large": {
+        "rho": -0.1546,
+        "stored_rho": -0.1546,
+        "bleu_mean": 0.0046,
+        "stored_bleu_mean": 0.0046
+      },
+      "qwen-72b": {
+        "rho": -0.0646,
+        "stored_rho": -0.0646,
+        "bleu_mean": 0.0052,
+        "stored_bleu_mean": 0.0052
+      }
+    }
+  },
+  "alignment_audit": {
+    "source_file": "/Users/abadila/Desktop/ethics/AEGIS/data/rewritten_texts_file_2K_1.csv",
+    "source_file_columns": [
+      "text",
+      "generated"
+    ],
+    "generated_flag_counts_first_2000_rows": {
+      "0": 1000,
+      "1": 1000
+    },
+    "rows_whose_first_12_words_match_human_text_at_same_original_index": 1,
+    "bleu_mean_original_pairing": 0.0049,
+    "bleu_mean_aligned_pairing": 0.2883,
+    "edit_sim_mean_original_pairing": 0.0476,
+    "edit_sim_mean_aligned_pairing": 0.4263,
+    "explanation": "track3.load_source_texts() uses dict(enumerate(df['text'])) over a file whose rows alternate human/AI; key k therefore points to the human abstract of a DIFFERENT paper (k even) or to an old AI rewrite (k odd), not to the source of the rewrite with original_index k."
+  },
+  "original_track3_pairing": {
+    "n_pairs": 2989,
+    "n_sources": 300,
+    "n_generators": 10,
+    "pairs_per_source": {
+      "min": 9,
+      "median": 10.0,
+      "max": 10,
+      "n_sources_with_>=2_pairs": 300
+    },
+    "bleu_mean": 0.0049,
+    "bleu_median": 0.0042,
+    "source_cluster_bootstrap": {
+      "pooled_spearman": {
+        "estimate": -0.2078,
+        "ci95": [
+          -0.2562,
+          -0.1587
+        ],
+        "boot_p_two_sided": 0.0004
+      },
+      "within_source": {
+        "estimate": -0.2978,
+        "ci95": [
+          -0.3349,
+          -0.2603
+        ],
+        "boot_p_two_sided": 0.0004
+      },
+      "within_generator": {
+        "estimate": -0.0722,
+        "ci95": [
+          -0.1345,
+          -0.008
+        ],
+        "boot_p_two_sided": 0.0272
+      },
+      "within_source_and_generator": {
+        "estimate": -0.076,
+        "ci95": [
+          -0.1178,
+          -0.0337
+        ],
+        "boot_p_two_sided": 0.0004
+      },
+      "mean_of_per_generator_rho": {
+        "estimate": -0.1082,
+        "ci95": [
+          -0.1691,
+          -0.0427
+        ],
+        "boot_p_two_sided": 0.0012
+      }
+    },
+    "generator_cluster_bootstrap_pooled_spearman": {
+      "estimate": -0.2078,
+      "ci95": [
+        -0.3434,
+        -0.0784
+      ],
+      "boot_p_two_sided": 0.0004
+    },
+    "per_generator": {
+      "claude-sonnet": {
+        "n_pairs": 300,
+        "rho": -0.2677,
+        "ci95": [
+          -0.375,
+          -0.1528
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.0033,
+        "conf_mean": 0.9884
+      },
+      "deepseek-r1": {
+        "n_pairs": 300,
+        "rho": -0.2123,
+        "ci95": [
+          -0.3261,
+          -0.0976
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.0037,
+        "conf_mean": 0.9408
+      },
+      "gemini-flash": {
+        "n_pairs": 300,
+        "rho": -0.1698,
+        "ci95": [
+          -0.2837,
+          -0.0554
+        ],
+        "boot_p_two_sided": 0.0016,
+        "bleu_mean": 0.0043,
+        "conf_mean": 0.9494
+      },
+      "gpt-4o": {
+        "n_pairs": 300,
+        "rho": 0.0067,
+        "ci95": [
+          -0.1081,
+          0.1221
+        ],
+        "boot_p_two_sided": 0.8828,
+        "bleu_mean": 0.0053,
+        "conf_mean": 0.9005
+      },
+      "gpt-4o-mini": {
+        "n_pairs": 300,
+        "rho": -0.0469,
+        "ci95": [
+          -0.1626,
+          0.0665
+        ],
+        "boot_p_two_sided": 0.4176,
+        "bleu_mean": 0.0053,
+        "conf_mean": 0.9257
+      },
+      "llama-3.1-8b": {
+        "n_pairs": 289,
+        "rho": -0.1189,
+        "ci95": [
+          -0.2366,
+          0.0046
+        ],
+        "boot_p_two_sided": 0.0572,
+        "bleu_mean": 0.0059,
+        "conf_mean": 0.7791
+      },
+      "llama-3.3-70b": {
+        "n_pairs": 300,
+        "rho": -0.0233,
+        "ci95": [
+          -0.131,
+          0.0825
+        ],
+        "boot_p_two_sided": 0.6524,
+        "bleu_mean": 0.0059,
+        "conf_mean": 0.9043
+      },
+      "llama-3.3-70b-instruct": {
+        "n_pairs": 300,
+        "rho": -0.0308,
+        "ci95": [
+          -0.1445,
+          0.0778
+        ],
+        "boot_p_two_sided": 0.586,
+        "bleu_mean": 0.0053,
+        "conf_mean": 0.916
+      },
+      "mistral-large": {
+        "n_pairs": 300,
+        "rho": -0.1546,
+        "ci95": [
+          -0.2684,
+          -0.0407
+        ],
+        "boot_p_two_sided": 0.008,
+        "bleu_mean": 0.0046,
+        "conf_mean": 0.9794
+      },
+      "qwen-72b": {
+        "n_pairs": 300,
+        "rho": -0.0646,
+        "ci95": [
+          -0.1763,
+          0.0442
+        ],
+        "boot_p_two_sided": 0.2488,
+        "bleu_mean": 0.0052,
+        "conf_mean": 0.8934
+      }
+    },
+    "n_generators_negative": 9,
+    "n_generators_ci_excludes_0": 4,
+    "between_generator_spearman_of_means": {
+      "rho": -0.7212,
+      "n": 10
+    }
+  },
+  "aligned_pairing": {
+    "n_pairs": 2989,
+    "n_sources": 300,
+    "n_generators": 10,
+    "pairs_per_source": {
+      "min": 9,
+      "median": 10.0,
+      "max": 10,
+      "n_sources_with_>=2_pairs": 300
+    },
+    "bleu_mean": 0.2883,
+    "bleu_median": 0.2756,
+    "source_cluster_bootstrap": {
+      "pooled_spearman": {
+        "estimate": -0.5266,
+        "ci95": [
+          -0.5603,
+          -0.4912
+        ],
+        "boot_p_two_sided": 0.0004
+      },
+      "within_source": {
+        "estimate": -0.6267,
+        "ci95": [
+          -0.6487,
+          -0.6035
+        ],
+        "boot_p_two_sided": 0.0004
+      },
+      "within_generator": {
+        "estimate": -0.2761,
+        "ci95": [
+          -0.3335,
+          -0.2164
+        ],
+        "boot_p_two_sided": 0.0004
+      },
+      "within_source_and_generator": {
+        "estimate": -0.2727,
+        "ci95": [
+          -0.3137,
+          -0.2315
+        ],
+        "boot_p_two_sided": 0.0004
+      },
+      "mean_of_per_generator_rho": {
+        "estimate": -0.2894,
+        "ci95": [
+          -0.3449,
+          -0.2305
+        ],
+        "boot_p_two_sided": 0.0004
+      }
+    },
+    "generator_cluster_bootstrap_pooled_spearman": {
+      "estimate": -0.5266,
+      "ci95": [
+        -0.6651,
+        -0.3144
+      ],
+      "boot_p_two_sided": 0.0004
+    },
+    "per_generator": {
+      "claude-sonnet": {
+        "n_pairs": 300,
+        "rho": -0.3788,
+        "ci95": [
+          -0.4738,
+          -0.2805
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.1743,
+        "conf_mean": 0.9884
+      },
+      "deepseek-r1": {
+        "n_pairs": 300,
+        "rho": -0.2579,
+        "ci95": [
+          -0.3647,
+          -0.1511
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.2186,
+        "conf_mean": 0.9408
+      },
+      "gemini-flash": {
+        "n_pairs": 300,
+        "rho": -0.1809,
+        "ci95": [
+          -0.289,
+          -0.0657
+        ],
+        "boot_p_two_sided": 0.0028,
+        "bleu_mean": 0.2874,
+        "conf_mean": 0.9494
+      },
+      "gpt-4o": {
+        "n_pairs": 300,
+        "rho": -0.2636,
+        "ci95": [
+          -0.371,
+          -0.1464
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.3119,
+        "conf_mean": 0.9005
+      },
+      "gpt-4o-mini": {
+        "n_pairs": 300,
+        "rho": -0.2917,
+        "ci95": [
+          -0.3946,
+          -0.1795
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.2828,
+        "conf_mean": 0.9257
+      },
+      "llama-3.1-8b": {
+        "n_pairs": 289,
+        "rho": -0.3856,
+        "ci95": [
+          -0.4899,
+          -0.2748
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.4885,
+        "conf_mean": 0.7791
+      },
+      "llama-3.3-70b": {
+        "n_pairs": 300,
+        "rho": -0.2809,
+        "ci95": [
+          -0.3846,
+          -0.1713
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.3047,
+        "conf_mean": 0.9043
+      },
+      "llama-3.3-70b-instruct": {
+        "n_pairs": 300,
+        "rho": -0.26,
+        "ci95": [
+          -0.3663,
+          -0.1477
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.3034,
+        "conf_mean": 0.916
+      },
+      "mistral-large": {
+        "n_pairs": 300,
+        "rho": -0.3182,
+        "ci95": [
+          -0.424,
+          -0.2071
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.2027,
+        "conf_mean": 0.9794
+      },
+      "qwen-72b": {
+        "n_pairs": 300,
+        "rho": -0.2765,
+        "ci95": [
+          -0.3798,
+          -0.1667
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.3156,
+        "conf_mean": 0.8934
+      }
+    },
+    "n_generators_negative": 10,
+    "n_generators_ci_excludes_0": 10,
+    "between_generator_spearman_of_means": {
+      "rho": -0.9636,
+      "n": 10
+    }
+  },
+  "aligned_pairing_edit_similarity": {
+    "n_pairs": 2989,
+    "n_sources": 300,
+    "n_generators": 10,
+    "pairs_per_source": {
+      "min": 9,
+      "median": 10.0,
+      "max": 10,
+      "n_sources_with_>=2_pairs": 300
+    },
+    "bleu_mean": 0.4263,
+    "bleu_median": 0.4286,
+    "source_cluster_bootstrap": {
+      "pooled_spearman": {
+        "estimate": -0.4756,
+        "ci95": [
+          -0.5112,
+          -0.4398
+        ],
+        "boot_p_two_sided": 0.0004
+      },
+      "within_source": {
+        "estimate": -0.5561,
+        "ci95": [
+          -0.5831,
+          -0.5296
+        ],
+        "boot_p_two_sided": 0.0004
+      },
+      "within_generator": {
+        "estimate": -0.2492,
+        "ci95": [
+          -0.3044,
+          -0.1926
+        ],
+        "boot_p_two_sided": 0.0004
+      },
+      "within_source_and_generator": {
+        "estimate": -0.2443,
+        "ci95": [
+          -0.2836,
+          -0.2033
+        ],
+        "boot_p_two_sided": 0.0004
+      },
+      "mean_of_per_generator_rho": {
+        "estimate": -0.2598,
+        "ci95": [
+          -0.3132,
+          -0.2027
+        ],
+        "boot_p_two_sided": 0.0004
+      }
+    },
+    "generator_cluster_bootstrap_pooled_spearman": {
+      "estimate": -0.4756,
+      "ci95": [
+        -0.6247,
+        -0.2549
+      ],
+      "boot_p_two_sided": 0.0004
+    },
+    "per_generator": {
+      "claude-sonnet": {
+        "n_pairs": 300,
+        "rho": -0.3356,
+        "ci95": [
+          -0.4325,
+          -0.2316
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.2534,
+        "conf_mean": 0.9884
+      },
+      "deepseek-r1": {
+        "n_pairs": 300,
+        "rho": -0.215,
+        "ci95": [
+          -0.3212,
+          -0.1022
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.406,
+        "conf_mean": 0.9408
+      },
+      "gemini-flash": {
+        "n_pairs": 300,
+        "rho": -0.2074,
+        "ci95": [
+          -0.3144,
+          -0.0976
+        ],
+        "boot_p_two_sided": 0.0008,
+        "bleu_mean": 0.4578,
+        "conf_mean": 0.9494
+      },
+      "gpt-4o": {
+        "n_pairs": 300,
+        "rho": -0.2082,
+        "ci95": [
+          -0.3219,
+          -0.0932
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.496,
+        "conf_mean": 0.9005
+      },
+      "gpt-4o-mini": {
+        "n_pairs": 300,
+        "rho": -0.2171,
+        "ci95": [
+          -0.3295,
+          -0.1025
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.4634,
+        "conf_mean": 0.9257
+      },
+      "llama-3.1-8b": {
+        "n_pairs": 289,
+        "rho": -0.3736,
+        "ci95": [
+          -0.4734,
+          -0.2644
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.5929,
+        "conf_mean": 0.7791
+      },
+      "llama-3.3-70b": {
+        "n_pairs": 300,
+        "rho": -0.2636,
+        "ci95": [
+          -0.3676,
+          -0.1539
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.3797,
+        "conf_mean": 0.9043
+      },
+      "llama-3.3-70b-instruct": {
+        "n_pairs": 300,
+        "rho": -0.265,
+        "ci95": [
+          -0.3734,
+          -0.152
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.377,
+        "conf_mean": 0.916
+      },
+      "mistral-large": {
+        "n_pairs": 300,
+        "rho": -0.2444,
+        "ci95": [
+          -0.3555,
+          -0.1305
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.3601,
+        "conf_mean": 0.9794
+      },
+      "qwen-72b": {
+        "n_pairs": 300,
+        "rho": -0.2679,
+        "ci95": [
+          -0.3739,
+          -0.1598
+        ],
+        "boot_p_two_sided": 0.0004,
+        "bleu_mean": 0.4829,
+        "conf_mean": 0.8934
+      }
+    },
+    "n_generators_negative": 10,
+    "n_generators_ci_excludes_0": 10,
+    "between_generator_spearman_of_means": {
+      "rho": -0.7939,
+      "n": 10
+    }
+  },
+  "corroboration_gnn_specialist_files": {
+    "llama-3.1-8b": {
+      "file": "bleu_confidence_llama-3.1-8b.json",
+      "n_pairs": 289,
+      "rho": -0.4196,
+      "stored_spearman_rho": -0.4196,
+      "ci95": [
+        -0.5149,
+        -0.317
+      ],
+      "bleu4_mean": 0.4885,
+      "note": "GNN specialist confidence; one pair per source, so pair bootstrap == source bootstrap"
+    },
+    "llama-3.3-70b": {
+      "file": "bleu_confidence_llama-3.3-70b.json",
+      "n_pairs": 300,
+      "rho": -0.3076,
+      "stored_spearman_rho": -0.3076,
+      "ci95": [
+        -0.4085,
+        -0.2
+      ],
+      "bleu4_mean": 0.3047,
+      "note": "GNN specialist confidence; one pair per source, so pair bootstrap == source bootstrap"
+    }
+  }
+}

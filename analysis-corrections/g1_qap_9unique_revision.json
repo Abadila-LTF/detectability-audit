@@ -1,0 +1,10 @@
+{
+ "experiment": "G1_QAP_9unique_revision (F2: duplicate endpoint excluded per A6.1)",
+ "dropped_model": "llama-3.3-70b-instruct (replicate endpoint)",
+ "n_models": 9,
+ "n_pairs": 36,
+ "transfer": "averaged (symmetrized) meanpool matrix",
+ "rho_observed": 0.5536679536679537,
+ "p_exact_enumeration": 0.006974757495590829,
+ "permutations": 362880
+}

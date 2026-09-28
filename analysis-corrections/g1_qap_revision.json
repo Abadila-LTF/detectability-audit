@@ -1,0 +1,251 @@
+{
+  "experiment": "G1_QAP_permutation_revision",
+  "reviewer": "R3: 45 pairwise comparisons are not independent",
+  "method": "QAP: jointly permute row/column model labels of the predictor matrix; recompute Spearman rho over the selected pairs. Exact enumeration of all 10! = 3,628,800 relabellings (identity included) plus 100,000 Monte Carlo draws (p = (#{rho_perm >= rho_obs} + 1)/(B + 1)).",
+  "inputs": {
+    "geometry_gates.json": [
+      "gate_G1.whitened_cosine_matrix.values",
+      "gate_G1.raw_cosine_matrix.values",
+      "gate_G1.transfer_matrix.values",
+      "G1_norm_corrected.per_model_whitened_norms"
+    ],
+    "transfer_matrix_3seed_avg.json": [
+      "meanpool_mean",
+      "aegis_mean"
+    ]
+  },
+  "data_root": "/Users/abadila/Desktop/ethics/AEGIS-Multi",
+  "models": [
+    "claude-sonnet",
+    "deepseek-r1",
+    "gemini-flash",
+    "gpt-4o",
+    "gpt-4o-mini",
+    "llama-3.1-8b",
+    "llama-3.3-70b",
+    "llama-3.3-70b-instruct",
+    "mistral-large",
+    "qwen-72b"
+  ],
+  "reported_in_source": {
+    "gate_G1.whitened_cosine_vs_transfer": {
+      "rho": 0.6731,
+      "p": 0.0
+    },
+    "gate_G1.raw_cosine_vs_transfer": {
+      "rho": 0.6611,
+      "p": 1e-06
+    },
+    "G1_norm_corrected.norm_corrected_rho": 0.4358,
+    "G1_norm_corrected.norm_corrected_symmetric_rho": 0.7589
+  },
+  "tests": {
+    "primary": {
+      "label": "Whitened cosine vs transfer, upper triangle (train i -> test j, i<j) \u2014 the manuscript's rho=0.673",
+      "n_pairs": 45,
+      "observed_rho": 0.6731,
+      "monte_carlo": {
+        "n_permutations": 100000,
+        "seed": 20260928,
+        "p_one_sided": 0.00034999650003499967,
+        "p_two_sided_abs": 0.00034999650003499967,
+        "null_mean": 0.0003,
+        "null_sd": 0.1624,
+        "null_q95": 0.2762,
+        "null_q99": 0.4224
+      },
+      "exact": {
+        "n_permutations": 3628800,
+        "n_ge_observed": 904,
+        "p_one_sided": 0.00024911816578483247,
+        "p_two_sided_abs": 0.00024911816578483247,
+        "null_mean": 0.0,
+        "null_sd": 0.1621
+      }
+    },
+    "raw_cosine": {
+      "label": "Raw (unwhitened) cosine vs transfer, upper triangle",
+      "n_pairs": 45,
+      "observed_rho": 0.6611,
+      "monte_carlo": {
+        "n_permutations": 100000,
+        "seed": 20260928,
+        "p_one_sided": 0.0003699963000369996,
+        "p_two_sided_abs": 0.0003699963000369996,
+        "null_mean": 0.0004,
+        "null_sd": 0.1589,
+        "null_q95": 0.274,
+        "null_q99": 0.429
+      },
+      "exact": {
+        "n_permutations": 3628800,
+        "n_ge_observed": 1044,
+        "p_one_sided": 0.0002876984126984127,
+        "p_two_sided_abs": 0.0002876984126984127,
+        "null_mean": -0.0,
+        "null_sd": 0.1585
+      }
+    },
+    "lower_triangle": {
+      "label": "Whitened cosine vs transfer, lower triangle (train j -> test i)",
+      "n_pairs": 45,
+      "observed_rho": 0.2568,
+      "monte_carlo": {
+        "n_permutations": 100000,
+        "seed": 20260928,
+        "p_one_sided": 0.09206907930920691,
+        "p_two_sided_abs": 0.1855281447185528,
+        "null_mean": -0.0003,
+        "null_sd": 0.1907,
+        "null_q95": 0.3131,
+        "null_q99": 0.4283
+      },
+      "exact": {
+        "n_permutations": 3628800,
+        "n_ge_observed": 335191,
+        "p_one_sided": 0.09236965388007054,
+        "p_two_sided_abs": 0.18625027557319224,
+        "null_mean": 0.0,
+        "null_sd": 0.1911
+      }
+    },
+    "symmetrised": {
+      "label": "Whitened cosine vs symmetrised transfer (T+T')/2",
+      "n_pairs": 45,
+      "observed_rho": 0.636,
+      "monte_carlo": {
+        "n_permutations": 100000,
+        "seed": 20260928,
+        "p_one_sided": 0.0007499925000749992,
+        "p_two_sided_abs": 0.0007499925000749992,
+        "null_mean": 0.0001,
+        "null_sd": 0.1705,
+        "null_q95": 0.3094,
+        "null_q99": 0.4578
+      },
+      "exact": {
+        "n_permutations": 3628800,
+        "n_ge_observed": 2582,
+        "p_one_sided": 0.0007115299823633157,
+        "p_two_sided_abs": 0.0007115299823633157,
+        "null_mean": 0.0,
+        "null_sd": 0.1705
+      }
+    },
+    "all_ordered_90": {
+      "label": "Whitened cosine vs transfer, all 90 ordered off-diagonal pairs",
+      "n_pairs": 90,
+      "observed_rho": 0.4451,
+      "monte_carlo": {
+        "n_permutations": 100000,
+        "seed": 20260928,
+        "p_one_sided": 0.001089989100108999,
+        "p_two_sided_abs": 0.001089989100108999,
+        "null_mean": 0.0,
+        "null_sd": 0.1296,
+        "null_q95": 0.2294,
+        "null_q99": 0.3463
+      },
+      "exact": {
+        "n_permutations": 3628800,
+        "n_ge_observed": 3750,
+        "p_one_sided": 0.0010333994708994708,
+        "p_two_sided_abs": 0.0010333994708994708,
+        "null_mean": -0.0,
+        "null_sd": 0.1297
+      }
+    },
+    "meanpool_3seed": {
+      "label": "Whitened cosine vs 3-seed MeanPool transfer (transfer_matrix_3seed_avg.meanpool_mean), upper",
+      "n_pairs": 45,
+      "observed_rho": 0.6622,
+      "monte_carlo": {
+        "n_permutations": 100000,
+        "seed": 20260928,
+        "p_one_sided": 0.0004599954000459995,
+        "p_two_sided_abs": 0.0004599954000459995,
+        "null_mean": 0.0003,
+        "null_sd": 0.163,
+        "null_q95": 0.2769,
+        "null_q99": 0.4207
+      },
+      "exact": {
+        "n_permutations": 3628800,
+        "n_ge_observed": 1065,
+        "p_one_sided": 0.00029348544973544974,
+        "p_two_sided_abs": 0.00029348544973544974,
+        "null_mean": -0.0,
+        "null_sd": 0.1626
+      }
+    },
+    "aegis_3seed": {
+      "label": "Whitened cosine vs 3-seed AEGIS transfer (transfer_matrix_3seed_avg.aegis_mean), upper",
+      "n_pairs": 45,
+      "observed_rho": 0.6655,
+      "monte_carlo": {
+        "n_permutations": 100000,
+        "seed": 20260928,
+        "p_one_sided": 0.0004099959000409996,
+        "p_two_sided_abs": 0.0004099959000409996,
+        "null_mean": 0.0004,
+        "null_sd": 0.1636,
+        "null_q95": 0.2787,
+        "null_q99": 0.4245
+      },
+      "exact": {
+        "n_permutations": 3628800,
+        "n_ge_observed": 1132,
+        "p_one_sided": 0.00031194885361552027,
+        "p_two_sided_abs": 0.00031194885361552027,
+        "null_mean": 0.0,
+        "null_sd": 0.1634
+      }
+    },
+    "norm_corrected_90": {
+      "label": "Norm-corrected cos x ||\u0394_target|| vs transfer, 90 ordered pairs",
+      "n_pairs": 90,
+      "observed_rho": 0.4358,
+      "monte_carlo": {
+        "n_permutations": 100000,
+        "seed": 20260928,
+        "p_one_sided": 0.02030979690203098,
+        "p_two_sided_abs": 0.037629623703762966,
+        "null_mean": -0.0002,
+        "null_sd": 0.2186,
+        "null_q95": 0.3638,
+        "null_q99": 0.4831
+      },
+      "exact": {
+        "n_permutations": 3628800,
+        "n_ge_observed": 74650,
+        "p_one_sided": 0.020571538800705468,
+        "p_two_sided_abs": 0.03812307098765432,
+        "null_mean": -0.0,
+        "null_sd": 0.2193
+      }
+    },
+    "norm_corrected_sym": {
+      "label": "Norm-corrected symmetric cos x mean||\u0394|| vs transfer, upper",
+      "n_pairs": 45,
+      "observed_rho": 0.7589,
+      "monte_carlo": {
+        "n_permutations": 100000,
+        "seed": 20260928,
+        "p_one_sided": 9.99990000099999e-06,
+        "p_two_sided_abs": 9.99990000099999e-06,
+        "null_mean": 0.0006,
+        "null_sd": 0.1812,
+        "null_q95": 0.3088,
+        "null_q99": 0.4269
+      },
+      "exact": {
+        "n_permutations": 3628800,
+        "n_ge_observed": 2,
+        "p_one_sided": 5.511463844797178e-07,
+        "p_two_sided_abs": 5.511463844797178e-07,
+        "null_mean": -0.0,
+        "null_sd": 0.1812
+      }
+    }
+  }
+}

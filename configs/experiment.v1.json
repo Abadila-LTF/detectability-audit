@@ -1,0 +1,157 @@
+{
+  "schema_version": "aegis.clean-staircase.experiment.v1",
+  "run_id": "clean-fg-v5",
+  "condition": "free_generation_fixed256",
+  "priority": [
+    "tulu",
+    "pythia",
+    "rewrite_deferred"
+  ],
+  "source_contract": {
+    "source_csv": "../AEGIS/data/rewritten_texts_file_2K_1.csv",
+    "source_csv_sha256": "eda175032835cd4d91b118e1d407fd0b29bdea76ad96b9d77e7be8740953fdb0",
+    "source_label_column": "generated",
+    "human_label": 0,
+    "expected_raw_rows": 4000,
+    "expected_human_rows": 2000,
+    "canonical_source_manifest": "../AEGIS-Huminizer/manifests/source_manifest.csv",
+    "canonical_source_manifest_sha256": "34988b318afbef0bda88de370166277614f2deca6f43dc4c6ef8a6ce7b2ab058",
+    "topics_csv": "../AEGIS-Multi/data/raw/extracted_topics.csv",
+    "topics_csv_sha256": "a3529491e4052d46b968d84084e041c657bc6aa03a9d869bc2cc95fdd0dd87a9",
+    "main_compact_indices": [0, 499],
+    "pilot_size": 50,
+    "pilot_min_compact_index": 500,
+    "pilot_split": "train",
+    "exemplar_compact_indices": [760],
+    "exemplar_selection_report": "data/manifests/exemplar-selection-v3.json",
+    "exemplar_selection_report_sha256": "666255d39812dfb572562215ab7d7ea33f6bd3d7923e7a257826beb4c13af446"
+  },
+  "prompt": {
+    "version": "freegen-plain-full-human-1shot-fixed256-v5",
+    "surface": "plain_completion_for_every_model",
+    "target_human_text_visible_to_generator": false,
+    "full_exemplars": true,
+    "shot_count": 1
+  },
+  "decoding": {
+    "protocol": "fixed_native_model_tokens_then_fixed_roberta_view",
+    "temperature": 1.0,
+    "top_p": 0.95,
+    "top_k": -1,
+    "repetition_penalty": 1.0,
+    "n": 1,
+    "max_attempts": 1,
+    "fixed_new_tokens": 256,
+    "ignore_eos": true,
+    "lower_word_ratio": 0.9,
+    "upper_word_ratio": 1.1,
+    "word_bounds_role": "descriptive_qc_only_not_generation_or_acceptance",
+    "base_seed": 730241,
+    "normalization": "collapse_unicode_whitespace_only",
+    "selection": "none_one_attempt_every_source",
+    "acceptance": "nonempty_and_exactly_256_native_model_tokens",
+    "analysis_view": {
+      "tokenizer_hf_id": "FacebookAI/roberta-base",
+      "tokenizer_revision": "e2da8e2f811d1448a5b465c236feacd80ffbac7b",
+      "tokens": 128,
+      "special_tokens": "excluded_from_128_content_tokens",
+      "applied_symmetrically_to_human_and_generated_text": true
+    }
+  },
+  "runtime": {
+    "engine": "vllm",
+    "vllm_version": "0.21.0",
+    "cuda_image": "nvidia/cuda:12.9.0-devel-ubuntu22.04",
+    "python_version": "3.12",
+    "dtype": "float16",
+    "quantization": null,
+    "gpu": "A10",
+    "max_model_len": 2048,
+    "gpu_memory_utilization": 0.9,
+    "batch_size": 8,
+    "retries": 0,
+    "function_timeout_seconds": 8100,
+    "max_wall_seconds_per_model": 7200,
+    "model_volume": "aegis-clean-staircase-models-v1",
+    "results_volume": "aegis-clean-staircases-v1",
+    "app_name": "aegis-clean-staircases-v5"
+  },
+  "spend_guard": {
+    "modal_account_alias": "account_2_only",
+    "reported_starting_credit_usd": 30.0,
+    "experiment_ceiling_usd": 24.0,
+    "reserve_usd": 6.0,
+    "gpu_rate_usd_per_hour_reference": 1.1016,
+    "max_parallel_gpu_jobs": 2,
+    "parallel_shape": "one_tulu_plus_one_pythia",
+    "smoke_sources_per_cell": 3,
+    "pilot_sources_per_cell": 50,
+    "full_sources_per_cell": 500,
+    "full_launch_requires_explicit_flag": true
+  },
+  "models": {
+    "tulu": {
+      "base": {
+        "hf_id": "meta-llama/Llama-3.1-8B",
+        "revision": "d04e592bb4f6aa9cfee91e2e20afa771667e1d4b",
+        "order": 0,
+        "gated": true
+      },
+      "sft": {
+        "hf_id": "allenai/Llama-3.1-Tulu-3-8B-SFT",
+        "revision": "f2a0b46b0cfda21003c6141b1ff837b7e165524d",
+        "order": 1,
+        "gated": false
+      },
+      "dpo": {
+        "hf_id": "allenai/Llama-3.1-Tulu-3-8B-DPO",
+        "revision": "a7beb67e33ffd01cc87ac3b46cadc1000985b8db",
+        "order": 2,
+        "gated": false
+      },
+      "rlvr": {
+        "hf_id": "allenai/Llama-3.1-Tulu-3-8B",
+        "revision": "666943798adbde0b1aff34626007e26986a3c107",
+        "order": 3,
+        "gated": false
+      }
+    },
+    "pythia": {
+      "70m": {
+        "hf_id": "EleutherAI/pythia-70m-deduped",
+        "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+        "parameters": 70000000,
+        "order": 0,
+        "gated": false
+      },
+      "410m": {
+        "hf_id": "EleutherAI/pythia-410m-deduped",
+        "revision": "c4fc8d586d62df497f1f9b69d66d3ca419992d3e",
+        "parameters": 410000000,
+        "order": 1,
+        "gated": false
+      },
+      "1.4b": {
+        "hf_id": "EleutherAI/pythia-1.4b-deduped",
+        "revision": "554d9c1bae3877f740aece41feb90f912cf9fedc",
+        "parameters": 1400000000,
+        "order": 2,
+        "gated": false
+      },
+      "2.8b": {
+        "hf_id": "EleutherAI/pythia-2.8b-deduped",
+        "revision": "7d977fed8c4ce9649816af8cd5fe36a639cbe5b2",
+        "parameters": 2800000000,
+        "order": 3,
+        "gated": false
+      },
+      "6.9b": {
+        "hf_id": "EleutherAI/pythia-6.9b-deduped",
+        "revision": "372b1c08d9b5b0fc18ce86bbf294930e26e66ed5",
+        "parameters": 6900000000,
+        "order": 4,
+        "gated": false
+      }
+    }
+  }
+}
