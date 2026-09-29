@@ -2,7 +2,7 @@
 
 Companion release for:
 
-> Alaktif, A., Chergui, M., Faiq, G., Sayouti, A., Ammoumou, A.
+> Alaktif, A., Chergui, M., Faiq, G., Ammoumou, A.
 > *How Detectable Is Machine-Generated Text? A Preregistered Audit of
 > Post-Training, Scale, and Task Effects.* Under revision at
 > MDPI Technologies (technologies-4588510).
